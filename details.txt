@@ -1,0 +1,124 @@
+# Project Analysis: alma-matrix-link
+
+## Project Overview
+*   **Project Name:** vite_react_shadcn_ts (from package.json)
+*   **Description:** A next-generation alumni network platform for reconnecting, mentoring, empowering, and building the future together. (Inferred from README.md and page content)
+*   **Technologies Used:** Vite, TypeScript, React, shadcn-ui, Tailwind CSS, Framer Motion, React Router DOM, Supabase, Recharts, Zod, React Hook Form.
+*   **How to Run:**
+    1.  `git clone <YOUR_GIT_URL>`
+    2.  `cd <YOUR_PROJECT_NAME>`
+    3.  `npm i`
+    4.  `npm run dev`
+
+## Dependencies (from package.json)
+*   **Core:** react, react-dom, react-router-dom, @tanstack/react-query, framer-motion, next-themes, sonner, react-countup, react-day-picker, recharts, zod, react-hook-form, @hookform/resolvers, @supabase/supabase-js.
+*   **UI Libraries (shadcn-ui based on Radix UI):** @radix-ui/react-accordion, @radix-ui/react-alert-dialog, @radix-ui/react-aspect-ratio, @radix-ui/react-avatar, @radix-ui/react-checkbox, @radix-ui/react-collapsible, @radix-ui/react-context-menu, @radix-ui/react-dialog, @radix-ui/react-dropdown-menu, @radix-ui/react-hover-card, @radix-ui/react-label, @radix-ui/react-menubar, @radix-ui/react-navigation-menu, @radix-ui/react-popover, @radix-ui/react-progress, @radix-ui/react-radio-group, @radix-ui/react-scroll-area, @radix-ui/react-select, @radix-ui/react-separator, @radix-ui/react-slider, @radix-ui/react-slot, @radix-ui/react-switch, @radix-ui/react-tabs, @radix-ui/react-toast, @radix-ui/react-toggle, @radix-ui/react-toggle-group, @radix-ui/react-tooltip, class-variance-authority, clsx, cmdk, input-otp, lucide-react, react-resizable-panels, tailwind-merge, vaul.
+*   **Date Utility:** date-fns
+*   **Carousel:** embla-carousel-react
+
+## Development Dependencies (from package.json)
+*   @eslint/js, @tailwindcss/typography, @types/node, @types/react, @types/react-dom, @vitejs/plugin-react-swc, autoprefixer, eslint, eslint-plugin-react-hooks, eslint-plugin-react-refresh, globals, lovable-tagger, postcss, tailwindcss, typescript, typescript-eslint, vite.
+
+## Scripts (from package.json)
+*   `dev`: `vite` (Starts development server)
+*   `build`: `vite build` (Builds for production)
+*   `build:dev`: `vite build --mode development` (Builds for development mode)
+*   `lint`: `eslint .` (Runs ESLint)
+*   `preview`: `vite preview` (Serves the production build locally)
+
+## Configuration Files
+
+*   **`tailwind.config.ts`**:
+    *   `darkMode`: "class"
+    *   `content`: Targets files in `./pages`, `./components`, `./app`, `./src` for Tailwind CSS processing.
+    *   `theme.extend.colors`: Defines custom color palette using HSL values, including `primary`, `secondary`, `accent`, `destructive`, `muted`, `card`, `popover`, `border`, `input`, `ring`, `background`, `foreground`, and `sidebar` specific colors. Also defines `neon-cyan`, `neon-blue`, `neon-purple`, `neon-pink`.
+    *   `theme.extend.borderRadius`: Uses CSS variable `--radius`.
+    *   `theme.extend.keyframes`: Defines custom keyframes for `accordion-down`, `accordion-up`, `fade-in`, `fade-in-up`, `slide-in-right`, `glow-pulse`, `float`.
+    *   `theme.extend.animation`: Maps keyframes to animation properties.
+    *   `plugins`: `tailwindcss-animate`.
+
+*   **`postcss.config.js`**: Uses `tailwindcss` and `autoprefixer` plugins.
+
+*   **`tsconfig.json`**: References `tsconfig.app.json` and `tsconfig.node.json`. Sets `baseUrl` to `.` and `paths` for `@/*` to `./src/*`. Disables strict checks for `noImplicitAny`, `noUnusedParameters`, `noUnusedLocals`, `strictNullChecks`.
+
+*   **`tsconfig.app.json`**: Configures TypeScript for the application. Targets `ES2020`, uses `ESNext` module, enables `jsx: "react-jsx"`, `isolatedModules`, `moduleDetection: "force"`. Sets `baseUrl` and `paths` for `@/*`. Disables strict linting rules.
+
+*   **`tsconfig.node.json`**: Configures TypeScript for Node.js environment (e.g., Vite config). Targets `ES2022`, uses `ESNext` module, enables `isolatedModules`, `moduleDetection: "force"`. Enables `strict: true`.
+
+*   **`vite.config.ts`**:
+    *   `server`: Configures host to `::` and port to `8080`.
+    *   `plugins`: Uses `@vitejs/plugin-react-swc` and `lovable-tagger` (conditional for development mode).
+    *   `resolve.alias`: Sets `@` alias to `path.resolve(__dirname, "./src")`.
+
+*   **`eslint.config.js`**:
+    *   Ignores `dist` directory.
+    *   Extends recommended configurations from `@eslint/js` and `typescript-eslint`.
+    *   Applies to `**/*.{ts,tsx}` files.
+    *   Uses `globals.browser`.
+    *   Plugins: `react-hooks`, `react-refresh`.
+    *   Rules: Extends `react-hooks` recommended rules, adds `react-refresh/only-export-components` warning, and disables `@typescript-eslint/no-unused-vars`.
+
+*   **`supabase/config.toml`**: Contains `project_id = "bjlvaadzqyimirhiskaz"`.
+
+## Application Structure
+
+*   **Entry Point:** `src/main.tsx` (Renders the `App` component into the DOM).
+*   **Main App Component:** `src/App.tsx`
+    *   Sets up `QueryClientProvider` for `@tanstack/react-query`.
+    *   Uses `ThemeProvider` for theme management.
+    *   Uses `TooltipProvider`, `Toaster` (from shadcn-ui), and `Sonner` (from sonner library) for notifications.
+    *   Configures routing with `BrowserRouter`, `Routes`, and `Route` for:
+        *   `/` (Landing)
+        *   `/auth` (Auth)
+        *   `/dashboard` (Dashboard)
+        *   `/alumni` (Alumni)
+        *   `/events` (Events)
+        *   `/mentorship` (Mentorship)
+        *   `*` (NotFound)
+*   **Pages (`src/pages/`):**
+    *   `Alumni.tsx`: Displays a directory of alumni with search functionality.
+    *   `Auth.tsx`: Handles user sign-in and sign-up.
+    *   `Dashboard.tsx`: Admin dashboard with stats, engagement analytics, quick actions, and recent activity.
+    *   `Events.tsx`: Lists upcoming events with details and RSVP options.
+    *   `Index.tsx`: A fallback/placeholder page.
+    *   `Landing.tsx`: The main landing page with Hero, Stats, Features, Testimonials sections, and a footer.
+    *   `Mentorship.tsx`: Displays a list of mentors with their expertise, ratings, and session details.
+    *   `NotFound.tsx`: 404 error page.
+*   **Components (`src/components/`):**
+    *   `FloatingChatbot.tsx`: A floating AI assistant chatbot component.
+    *   `ThemeProvider.tsx`: Context provider for theme management (light/dark/system).
+    *   `ThemeToggle.tsx`: Button to toggle between light and dark themes.
+    *   **Landing Components (`src/components/landing/`):**
+        *   `Features.tsx`: Displays key features of the platform.
+        *   `Hero.tsx`: Main hero section with a call to action.
+        *   `Stats.tsx`: Displays key statistics with `react-countup` animation.
+        *   `Testimonials.tsx`: Displays user testimonials.
+    *   **Layout Components (`src/components/layout/`):**
+        *   `Navbar.tsx`: Navigation bar with links and theme toggle.
+    *   **UI Components (`src/components/ui/`):** A comprehensive set of shadcn-ui components, including:
+        *   `accordion`, `alert-dialog`, `alert`, `aspect-ratio`, `avatar`, `badge`, `breadcrumb`, `button`, `calendar`, `card`, `carousel`, `chart`, `checkbox`, `collapsible`, `command`, `context-menu`, `dialog`, `drawer`, `dropdown-menu`, `form`, `hover-card`, `input-otp`, `input`, `label`, `menubar`, `navigation-menu`, `pagination`, `popover`, `progress`, `radio-group`, `resizable`, `scroll-area`, `select`, `separator`, `sheet`, `sidebar`, `skeleton`, `slider`, `sonner`, `switch`, `table`, `tabs`, `textarea`, `toast`, `toaster`, `toggle-group`, `toggle`, `tooltip`, `use-toast`.
+*   **Hooks (`src/hooks/`):**
+    *   `use-mobile.tsx`: Custom hook to detect if the device is mobile based on a breakpoint.
+    *   `use-toast.ts`: Custom hook for managing toast notifications.
+*   **Utilities (`src/lib/`):**
+    *   `utils.ts`: Contains `cn` function for combining Tailwind CSS classes using `clsx` and `tailwind-merge`.
+*   **Integrations (`src/integrations/`):**
+    *   **Supabase (`src/integrations/supabase/`):**
+        *   `client.ts`: Initializes the Supabase client using environment variables.
+        *   `types.ts`: Defines TypeScript types for the Supabase database schema.
+
+## Styling
+
+*   **`src/index.css`**:
+    *   Imports Tailwind CSS base, components, and utilities.
+    *   Defines CSS variables for a comprehensive design system, including:
+        *   `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--destructive-foreground`, `--border`, `--input`, `--ring`, `--background`, `--foreground`, `--card`, `--card-foreground`, `--popover`, `--popover-foreground`, `--primary`, `--primary-foreground`, `--secondary`, `--secondary-foreground`, `--muted`, `--muted-foreground`, `--accent`, `--accent-foreground`, `--destructive`, `--destructive-foreground`, `--border`, `--input`, `--ring`, `--radius`.
+        *   Neon colors: `--neon-cyan`, `--neon-blue`, `--neon-purple`, `--neon-pink`.
+        *   Glassmorphism effects: `--glass-bg`, `--glass-border`.
+        *   Sidebar specific colors: `--sidebar-background`, `--sidebar-foreground`, etc.
+    *   Includes base styles for `body`, and custom classes for `glass-card`, `glow-border`, `text-gradient`, `neon-text` to implement the unique UI design.
+*   **`src/App.css`**: Contains basic styling for `#root`, `.logo`, `.card`, `.read-the-docs`, and `@keyframes logo-spin`.
+
+## Environment Variables (from src/vite-env.d.ts)
+*   `VITE_SUPABASE_URL`
+*   `VITE_SUPABASE_PUBLISHABLE_KEY`
