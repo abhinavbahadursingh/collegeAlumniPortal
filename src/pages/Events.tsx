@@ -17,7 +17,8 @@ const upcomingEvents = [
     time: "6:00 PM - 9:00 PM",
     location: "Virtual",
     attendees: 45,
-    category: "Networking"
+    category: "Networking",
+    description: "A premier summit for tech enthusiasts and professionals in Bangalore. Featuring talks from industry leaders, networking sessions, and workshops on the latest technologies."
   },
   {
     id: 2,
@@ -26,7 +27,8 @@ const upcomingEvents = [
     time: "2:00 PM - 4:00 PM",
     location: "Campus Auditorium",
     attendees: 67,
-    category: "Workshop"
+    category: "Workshop",
+    description: "Join us for an interactive workshop focused on career development strategies. Learn about resume building, interview skills, and networking effectively."
   },
   {
     id: 3,
@@ -35,7 +37,8 @@ const upcomingEvents = [
     time: "7:00 PM - 11:00 PM",
     location: "Taj West End, Bengaluru",
     attendees: 234,
-    category: "Social"
+    category: "Social",
+    description: "The most awaited event of the year! Reconnect with old friends, faculty, and make new memories at the Grand Alumni Reunion."
   },
   {
     id: 4,
@@ -44,7 +47,8 @@ const upcomingEvents = [
     time: "5:00 PM - 8:00 PM",
     location: "NASSCOM, Bengaluru",
     attendees: 85,
-    category: "Entrepreneurship"
+    category: "Entrepreneurship",
+    description: "Witness the next generation of entrepreneurs pitch their innovative ideas to a panel of investors and industry experts. A must-attend for aspiring founders."
   },
   {
     id: 5,
@@ -53,7 +57,8 @@ const upcomingEvents = [
     time: "9:00 AM - 5:00 PM",
     location: "Online",
     attendees: 150,
-    category: "Technology"
+    category: "Technology",
+    description: "A full-day summit dedicated to exploring the potential of Artificial Intelligence in solving India's unique challenges. Featuring keynotes, panel discussions, and hands-on workshops."
   },
   {
     id: 6,
@@ -62,7 +67,8 @@ const upcomingEvents = [
     time: "10:00 AM - 4:00 PM",
     location: "University Sports Ground",
     attendees: 300,
-    category: "Recreation"
+    category: "Recreation",
+    description: "Get ready for a day of friendly competition and fun at the Alumni Cricket League. Form your teams and compete for the coveted trophy."
   },
 ]
 
@@ -76,6 +82,9 @@ export default function Events() {
     const savedRsvp = localStorage.getItem("rsvpStatus");
     return savedRsvp ? JSON.parse(savedRsvp) : {};
   });
+  const [isLearnMoreOpen, setIsLearnMoreOpen] = useState(false);
+  const [selectedEventForDetails, setSelectedEventForDetails] = useState(null);
+
 
   useEffect(() => {
     const customEvents = JSON.parse(localStorage.getItem("customEvents") || "[]");
@@ -104,6 +113,11 @@ export default function Events() {
     setRsvpStatus(newRsvpStatus);
     localStorage.setItem("rsvpStatus", JSON.stringify(newRsvpStatus));
     setIsWithdrawDialogOpen(false);
+  };
+
+  const handleLearnMoreClick = (event) => {
+    setSelectedEventForDetails(event);
+    setIsLearnMoreOpen(true);
   };
 
   return (
@@ -194,7 +208,7 @@ export default function Events() {
                         ) : (
                           <Button className="glow-border" onClick={() => handleRsvpClick(event)}>RSVP</Button>
                         )}
-                        <Button variant="outline">Learn More</Button>
+                        <Button variant="outline" onClick={() => handleLearnMoreClick(event)}>Learn More</Button>
                       </div>
                     </div>
                   </div>
@@ -251,6 +265,42 @@ export default function Events() {
             </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {selectedEventForDetails && (
+        <Dialog open={isLearnMoreOpen} onOpenChange={setIsLearnMoreOpen}>
+          <DialogContent className="glass-card">
+              <DialogHeader>
+                <DialogTitle className="text-2xl text-gradient">{selectedEventForDetails.title}</DialogTitle>
+                <DialogDescription>
+                  {selectedEventForDetails.description}
+                </DialogDescription>
+              </DialogHeader>
+              <div className="my-4 space-y-2">
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Calendar className="h-4 w-4" />
+                    <span>{selectedEventForDetails.date}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Clock className="h-4 w-4" />
+                    <span>{selectedEventForDetails.time}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <MapPin className="h-4 w-4" />
+                    <span>{selectedEventForDetails.location}</span>
+                  </div>
+                  <div className="flex items-center gap-2 text-muted-foreground">
+                    <Users className="h-4 w-4" />
+                    <span>{selectedEventForDetails.attendees} attending</span>
+                  </div>
+              </div>
+              <DialogFooter>
+                <Button variant="outline" onClick={() => setIsLearnMoreOpen(false)}>
+                  Close
+                </Button>
+              </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   )
 }

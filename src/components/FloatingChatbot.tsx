@@ -1,21 +1,22 @@
-import { useState, useRef, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { MessageSquare, X, Send } from "lucide-react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Input } from "@/components/ui/input"
-import { ScrollArea } from "@/components/ui/scroll-area"
-import { supabase } from "@/integrations/supabase/client"
+import { useState, useRef, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { MessageSquare, X, Send } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Input } from "@/components/ui/input";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { supabase } from "@/integrations/supabase/client";
 
-interface ChatMessage {
-  id: number;
+// Consistent naming with backend
+interface Message {
   text: string;
-  sender: "user" | "ai";
+  sender: "user" | "bot";
 }
 
+// Renamed for clarity and convention
 export function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    { id: 1, text: "Hi! I'm your AI assistant. How can I help you today?", sender: "ai" },
+  const [messages, setMessages] = useState<Message[]>([
+    { text: "Hi! I'm your AI assistant. How can I help you today?", sender: "bot" },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -26,87 +27,57 @@ export function FloatingChatbot() {
   };
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  // const sendMessage = async () => {
-  //   if (input.trim() === "") return;
-
-  //   const userMessage: ChatMessage = { id: messages.length + 1, text: input, sender: "user" };
-  //   setMessages((prevMessages) => [...prevMessages, userMessage]);
-  //   setInput("");
-  //   setIsLoading(true);
-
-  //   try {
-  //     const { data, error } = await supabase.functions.invoke("chatbot", { 
-  //       body: { query: userMessage.text },  // ✅ FIXED: Removed JSON.stringify()
-  //     });
-
-  //     if (error) {
-  //       console.error("Error invoking chatbot function:", error);
-  //       setMessages((prevMessages) => [
-  //         ...prevMessages,
-  //         { id: prevMessages.length + 1, text: "Sorry, I'm having trouble connecting to the AI.", sender: "ai" },
-  //       ]);
-  //     } else {
-  //       const aiResponse: ChatMessage = { id: messages.length + 2, text: data.response, sender: "ai" };
-  //       setMessages((prevMessages) => [...prevMessages, aiResponse]);
-  //     }
-  //   } catch (error) {
-  //     console.error("Network or unexpected error:", error);
-  //     setMessages((prevMessages) => [
-  //       ...prevMessages,
-  //       { id: prevMessages.length + 1, text: "An unexpected error occurred.", sender: "ai" },
-  //     ]);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
-  const sendMessage = async () => {
-  if (input.trim() === "") return;
-
-  const userMessage: ChatMessage = { id: messages.length + 1, text: input, sender: "user" };
-  setMessages((prevMessages) => [...prevMessages, userMessage]);
-  setInput("");
-  setIsLoading(true);
-
-  try {
-    const { data, error } = await supabase.functions.invoke("chatbot", {
-      body: JSON.stringify({ message: userMessage.text }), // ✅ FIX 1: JSON.stringify
-      headers: { "Content-Type": "application/json" },      // ✅ FIX 2: Explicit header
-    });
-
-    if (error) {
-      console.error("Error invoking chatbot function:", error);
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { id: prevMessages.length + 1, text: "Sorry, I'm having trouble connecting to the AI.", sender: "ai" },
-      ]);
-    } else {
-      const aiResponseText =
-        data?.response ||
-        data?.message ||
-        JSON.stringify(data) ||
-        "No response from AI.";
-
-      const aiResponse: ChatMessage = {
-        id: messages.length + 2,
-        text: aiResponseText,
-        sender: "ai",
-      };
-      setMessages((prevMessages) => [...prevMessages, aiResponse]);
+    if (isOpen) {
+      scrollToBottom();
     }
-  } catch (error) {
-    console.error("Network or unexpected error:", error);
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { id: prevMessages.length + 1, text: "An unexpected error occurred.", sender: "ai" },
-    ]);
-  } finally {
-    setIsLoading(false);
-  }
-};
+  }, [messages, isOpen]);
+
+  const handleSend = async () => {
+    if (input.trim() === "") return;
+
+    const userMessage: Message = { text: input, sender: "user" };
+    // Add user message to state
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
+    setInput("");
+    setIsLoading(true);
+
+    try {
+      // The body must match the function's expectation: { messages: [...] }
+      const { data, error } = await supabase.functions.invoke("chatbot", {
+        body: { messages: newMessages },
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      // The function returns a `reply` field
+      const botMessage: Message = { text: data.reply, sender: "bot" };
+      setMessages((prevMessages) => [...prevMessages, botMessage]);
+
+    } catch (error: any) {
+      console.error("Raw error from Supabase:", error);
+      // The actual error from the function is in a ReadableStream, we need to decode it.
+      if (error.context?.body instanceof ReadableStream) {
+        try {
+          const reader = error.context.body.getReader();
+          const { value } = await reader.read();
+          const errorText = new TextDecoder().decode(value);
+          console.error("Detailed error from function:", JSON.parse(errorText));
+        } catch (e) {
+          console.error("Failed to read or parse error stream:", e);
+        }
+      }
+      const errorMessage: Message = {
+        text: "Sorry, I'm having trouble connecting. Please try again later.",
+        sender: "bot",
+      };
+      setMessages((prevMessages) => [...prevMessages, errorMessage]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <>
@@ -136,13 +107,14 @@ export function FloatingChatbot() {
               <h3 className="text-lg font-bold mb-4 text-gradient">AI Assistant</h3>
               <ScrollArea className="flex-1 pr-4 mb-4">
                 <div className="space-y-4">
-                  {messages.map((message) => (
+                  {messages.map((message, index) => (
                     <div
-                      key={message.id}
+                      key={index} // Using index as key is acceptable for this append-only list
                       className={`flex ${message.sender === "user" ? "justify-end" : "justify-start"}`}
                     >
                       <div
-                        className={`max-w-[70%] p-3 rounded-lg ${message.sender === "user"
+                        className={`max-w-[70%] p-3 rounded-lg ${
+                          message.sender === "user"
                             ? "bg-primary text-primary-foreground"
                             : "glass-card border text-muted-foreground"
                         }`}
@@ -168,13 +140,13 @@ export function FloatingChatbot() {
                   onChange={(e) => setInput(e.target.value)}
                   onKeyPress={(e) => {
                     if (e.key === "Enter" && !isLoading) {
-                      sendMessage();
+                      handleSend();
                     }
                   }}
                   className="flex-1"
                   disabled={isLoading}
                 />
-                <Button onClick={sendMessage} disabled={isLoading}>
+                <Button onClick={handleSend} disabled={isLoading}>
                   <Send className="h-5 w-5" />
                 </Button>
               </div>
