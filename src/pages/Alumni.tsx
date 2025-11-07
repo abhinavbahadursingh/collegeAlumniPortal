@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Search, MapPin, Briefcase, Mail, Linkedin } from "lucide-react";
-import { FloatingChatbot } from "@/components/FloatingChatbot";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Navbar } from "@/components/layout/Navbar";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
@@ -117,7 +117,7 @@ export default function Alumni() {
           )}
         </motion.div>
 
-        <FloatingChatbot />
+        
       </div>
 
       <AnimatePresence>

@@ -1,7 +1,7 @@
 import { Card } from "@/components/ui/card"
 import { Users, Calendar, Heart, TrendingUp, Award, MessageSquare } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
-import { FloatingChatbot } from "@/components/FloatingChatbot"
+
 import { motion } from "framer-motion"
 import { Navbar } from "@/components/layout/Navbar"
 
@@ -152,7 +152,7 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        <FloatingChatbot />
+        
       </div>
     </>
   )

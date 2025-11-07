@@ -17,6 +17,63 @@
     <meta name="twitter:title" content="AlumniNet - Alumni Engagement Platform" />
     <meta name="twitter:description" content="Reconnect. Mentor. Empower. Build the future together." />
     <!-- <meta name="twitter:image" content="https://lovable.dev/opengraph-image-p98pqg.png" /> -->
+  <style>
+      /* Botpress Webchat Customization */
+      .bpw-widget-container {
+        --bpw-background-color: hsl(var(--background));
+        --bpw-text-color: hsl(var(--foreground));
+        --bpw-font-family: inherit;
+        --bpw-border-radius: var(--radius);
+        --bpw-box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+      }
+
+      /* Header */
+      .bpw-header-container {
+        background-color: hsl(var(--card)) !important;
+        border-bottom: 1px solid hsl(var(--border));
+      }
+
+      .bpw-header-title {
+        color: hsl(var(--card-foreground)) !important;
+      }
+
+      /* Messages */
+      .bpw-message-bubble {
+        background-color: hsl(var(--muted)) !important;
+        color: hsl(var(--muted-foreground)) !important;
+      }
+
+      .bpw-from-user .bpw-message-bubble {
+        background-color: hsl(var(--primary)) !important;
+        color: hsl(var(--primary-foreground)) !important;
+      }
+
+      /* Composer */
+      .bpw-composer {
+        background-color: hsl(var(--card)) !important;
+        border-top: 1px solid hsl(var(--border));
+      }
+
+      #input-message {
+        background-color: hsl(var(--input)) !important;
+        color: hsl(var(--foreground)) !important;
+        border-radius: var(--radius) !important;
+      }
+
+      .bpw-send-button svg {
+        fill: hsl(var(--primary)) !important;
+      }
+
+      /* Launcher button */
+      .bpw-launcher {
+        background-color: hsl(var(--primary)) !important;
+      }
+
+      .bpw-launcher:hover {
+        background-color: hsl(var(--primary)) !important;
+        filter: brightness(1.1);
+      }
+    </style>
   </head>
 
   <body>

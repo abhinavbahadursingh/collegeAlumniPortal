@@ -3,7 +3,7 @@ import { Hero } from "@/components/landing/Hero"
 import { Stats } from "@/components/landing/Stats"
 import { Features } from "@/components/landing/Features"
 import { Testimonials } from "@/components/landing/Testimonials"
-import { FloatingChatbot } from "@/components/FloatingChatbot"
+
 
 export default function Landing() {
   return (
@@ -13,7 +13,7 @@ export default function Landing() {
       <Stats />
       <Features />
       <Testimonials />
-      <FloatingChatbot />
+      
       
       <footer className="py-12 border-t glass-card">
         <div className="container mx-auto px-4">

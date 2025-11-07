@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Star, MessageSquare, Check, X, Mail, Linkedin } from "lucide-react";
-import { FloatingChatbot } from "@/components/FloatingChatbot";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
@@ -169,7 +169,7 @@ export default function Mentorship() {
           </Card>
         </motion.div>
 
-        <FloatingChatbot />
+        
       </div>
 
       {selectedMentor && (

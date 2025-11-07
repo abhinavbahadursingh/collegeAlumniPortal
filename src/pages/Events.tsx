@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, MapPin, Users, Clock, Check, X } from "lucide-react";
-import { FloatingChatbot } from "@/components/FloatingChatbot";
+
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
@@ -218,7 +218,7 @@ export default function Events() {
           </div>
         </motion.div>
 
-        <FloatingChatbot />
+        
       </div>
 
       <Dialog open={isRsvpOpen} onOpenChange={setIsRsvpOpen}>
