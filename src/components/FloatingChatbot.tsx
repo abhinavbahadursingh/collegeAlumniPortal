@@ -84,7 +84,7 @@ export function FloatingChatbot() {
       <motion.div
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
-        className="fixed bottom-6 right-6 z-50"
+        className="fixed bottom-6 left-6 z-50"
       >
         <Button
           size="lg"
@@ -101,7 +101,7 @@ export function FloatingChatbot() {
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
-            className="fixed bottom-24 right-6 z-50 w-96 max-w-[calc(100vw-3rem)]"
+            className="fixed bottom-24 left-6 z-50 w-96 max-w-[calc(100vw-3rem)]"
           >
             <div className="glass-card rounded-2xl p-6 shadow-2xl border flex flex-col h-[500px]">
               <h3 className="text-lg font-bold mb-4 text-gradient">AI Assistant</h3>
